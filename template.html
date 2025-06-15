@@ -99,12 +99,18 @@
           <td>Journey Date:</td>
           <td><input type="text" id="form_journeyDate" name="journeyDate" value="" size="40"></td>
           <td>Analysis Date:</td>
-          <td><input type="text" id="reportId" name="reportId" value="" size="40"></td>
+          <td><input type="text" id="reportId" name="reportId" value="" size="40">
+            <script>
+                let d = new Date(), f = n => ('0' + n).slice(-2);
+                document.getElementById('reportId').value = f(d.getDate()) + '/' + f(d.getMonth() + 1) + '/' + d.getFullYear();
+            </script>
+          </td>
         </tr>
+
         <tr>
-          <td>LP Name/Desig:</td>
+          <td>LP Name/Desig/Headquater:</td>
           <td><input type="text"  id="form_lpName" name="lpName" value="" size="40"></td>
-          <td>ALP Name:</td>
+          <td>ALP Name/Headquater:</td>
           <td><input type="text" id="form_alpName" name="alpName" value="" size="40"></td>
         </tr>
         <tr>
@@ -156,22 +162,22 @@
         <tr>
           <td>Late Controlling:</td>
           <td><input type="text" id="form_lateControlling" name="lateControlling" value="" size="40"></td>
-          <td>Abrupt Breaking:</td>
-          <td><input type="text" id="form_abruptBreaking" name="abruptBreaking" value="" size="40"></td>
+          <!-- <td>Abrupt Breaking:</td>
+          <td><input type="text" id="form_abruptBreaking" name="abruptBreaking" value="" size="40"></td> -->
         </tr>
         <!-- <tr>
           
            <td>Poor Running:</td>
           <td><input type="text" id="form_poorRunning" name="poorRunning" value="" size="40"></td> 
         </tr> -->
-        <tr>
+        <!-- <tr>
           <td>Improper BPT:</td>
           <td><input type="text" id="form_improperBpt" name="improperBpt" value="" size="40"></td>
           <td>SR Overspeed:</td>
           <td><input type="text" id="form_srOverspeed" name="srOverspeed" value="" size="40"></td>
-        </tr>
+        </tr> -->
         <tr>
-          <td>BFT Time<input type="text" id="form_bpttime" name="bpttime" value=""></td>
+          <td>BFT Time<input type="text" id="form_bfttime" name="bpttime" value=""></td>
           <td>Speed Drop <input type="text" id="form_bftspeeddrop" name="bftspeeddrop" value=""></td>
        
           <td>BPT Time<input type="text" id="form_bpttime" name="bpttime" value=""></td>
@@ -238,8 +244,9 @@
               <th>SR Specified Speed</th>
               <th>Start From</th>
               <th>End AT</th>
-              <th>Avg Speed Observed</th>
-              <th>Distance Travelled</th>
+              <!-- <th>Avg Speed Observed</th> -->
+              <!-- <th>Distance Travelled</th> -->
+               <th colspan="2">Remakrs</th>
               <th><a onclick=addspeedRestrictiondataRow()>+</a></th>
             </tr>
           </thead>
@@ -266,6 +273,101 @@
     // Global filtered data variable (default is full data)
     var filteredData = data.slice();
 
+      function parseDateTime(str) {
+        const [datePart, timePart] = str.split(" ");
+        const [yy, mm, dd] = datePart.split("/").map(Number);
+        const [hh, min, ss] = timePart.split(":").map(Number);
+        return new Date(2000 + yy, mm - 1, dd, hh, min, ss);
+      }
+
+
+      function detectTest(data, config) {
+        const {
+          testName,
+          speedMin,
+          speedMax,
+          dropMin,
+          dropMax,
+          requireRecovery
+        } = config;
+
+        const dataWithTime = data.map(d => ({
+          ...d,
+          timestamp: parseDateTime(d.datetime).getTime() / 1000
+        }));
+
+        const startTime = dataWithTime[0].timestamp;
+        const first20Min = dataWithTime.filter(
+          d => d.timestamp - startTime <= 1200
+        );
+
+        for (let i = 5; i < first20Min.length - 10; i++) {
+          const candidate = first20Min[i];
+          const candidateSpeed = candidate.kmph;
+
+          // Candidate speed must be in valid range
+          if (candidateSpeed < speedMin || candidateSpeed > speedMax) continue;
+
+          // Phase A: Check for upward trend/fluctuation
+          let hasPriorRise = false;
+          for (let j = i - 5; j < i; j++) {
+            if (first20Min[j].kmph < candidateSpeed) {
+              hasPriorRise = true;
+              break;
+            }
+          }
+          if (!hasPriorRise) continue;
+
+          // Phase B: Continuous drop
+          let lowestSpeed = candidateSpeed;
+          let dropEndIndex = i;
+
+          for (let j = i + 1; j < first20Min.length; j++) {
+            const currentSpeed = first20Min[j].kmph;
+
+            if (currentSpeed <= lowestSpeed) {
+              lowestSpeed = currentSpeed;
+              dropEndIndex = j;
+            } else {
+              break; // drop interrupted
+            }
+          }
+
+          const dropAmount = candidateSpeed - lowestSpeed;
+
+          // Validate drop range
+          if (dropAmount < dropMin || dropAmount > dropMax) continue;
+
+          // Phase C: Recovery (if required)
+          if (requireRecovery) {
+            for (let k = dropEndIndex + 1; k < first20Min.length; k++) {
+              if (first20Min[k].kmph >= candidateSpeed) {
+                var result = {};
+                result[testName + "_Point"] = candidate.datetime;
+                result[testName + "_Drop_kmph"] = parseFloat(dropAmount.toFixed(2));
+                result[testName] = true;
+                return result;
+              }
+            }
+            continue; // drop valid but no recovery
+          }
+
+          // If recovery not required
+            return {
+            [testName]: true,
+            [testName + "_Point"]: candidate.datetime,
+            [testName + "_Drop_kmph"]: parseFloat(dropAmount.toFixed(2))
+            };
+        }
+
+        return {
+          [testName]: false,
+          reason: "No valid " + testName + " pattern: rise → continuous drop (" + dropMin + "–" + dropMax + " kmph from " + speedMin + "–" + speedMax + ")",
+          [testName + "_Point"]: null,
+          [testName + "_Drop_kmph"]: null
+        };
+      }
+        
     // Limits for Coaching and Goods
     var limits = {
       "1000mtr": { "Coaching": 50, "Goods": 30 },
@@ -483,8 +585,48 @@
             row.appendChild(cellbreakingtechnique);
             stopDetailsBody.appendChild(row);
         });
+
+        try {
+          var BPT_INFO = detectTest(filteredData, {
+            testName: 'BPT',
+            speedMin: 40,
+            speedMax: 76,
+            dropMin: 30,
+            dropMax: 50,
+            requireRecovery: false
+          });
+
+          var BFT_INFO = detectTest(filteredData, {
+            testName: 'BFT',
+            speedMin: 11,
+            speedMax: 20,
+            dropMin: 4,
+            dropMax: 10,
+            requireRecovery: true
+          });
+
+          if (BFT_INFO.BFT == true) {
+            document.getElementById("form_bfttime").value = BFT_INFO.BFT_Point;
+            document.getElementById("form_bftspeeddrop").value = BFT_INFO.BFT_Drop_kmph;
+          }else{
+            document.getElementById("form_bfttime").value = "";
+            document.getElementById("form_bftspeeddrop").value = "";
+          }
+          if (BPT_INFO.BPT == true) {
+            document.getElementById("form_bpttime").value = BPT_INFO.BPT_Point;
+            document.getElementById("form_bptspeeddrop").value = BPT_INFO.BPT_Drop_kmph;
+          }else{
+            document.getElementById("form_bpttime").value = "";
+            document.getElementById("form_bptspeeddrop").value = "";
+          }
+        } catch (error) {
+          console.error("An error occurred while detecting tests:", error);
+        }
+
     }
     
+    // update Analysis End
+
     // Filter form event listener
     document.getElementById("filterForm").addEventListener("submit", function(e) {
         e.preventDefault();
@@ -574,7 +716,7 @@
         timeSpeedChart.cursor.snapToSeries = series;
 
         dateAxis.tooltip.label.adapter.add("textOutput", function(text, target) {
-          console.log(text, target.dataItem);
+          //console.log(text, target.dataItem);
           var foundItem = filteredData.find(function(item) {
                 return item.datetime.includes(text);
               });
@@ -702,13 +844,18 @@
     endAtCell.innerHTML = '<input type="text" name="endAt" style="width:95%;" />';
     newRow.appendChild(endAtCell);
 
-    var avgSpeedObsCell1 = document.createElement('td');
-    avgSpeedObsCell1.innerHTML = '<input type="text" name="avgSpeedObs1" style="width:95%;" />';
-    newRow.appendChild(avgSpeedObsCell1);
+    // var avgSpeedObsCell1 = document.createElement('td');
+    // avgSpeedObsCell1.innerHTML = '<input type="text" name="avgSpeedObs1" style="width:95%;" />';
+    // newRow.appendChild(avgSpeedObsCell1);
 
-    var avgSpeedObsCell2 = document.createElement('td');
-    avgSpeedObsCell2.innerHTML = '<input type="text" name="avgSpeedObs2" style="width:95%;" />';
-    newRow.appendChild(avgSpeedObsCell2);
+    // var avgSpeedObsCell2 = document.createElement('td');
+    // avgSpeedObsCell2.innerHTML = '<input type="text" name="avgSpeedObs2" style="width:95%;" />';
+    // newRow.appendChild(avgSpeedObsCell2);
+
+    var remarksCell = document.createElement('td');
+    remarksCell.setAttribute('colspan', '2');
+    remarksCell.innerHTML = '<textarea name="remarks" style="width:95%; height:50px;"></textarea>';
+    newRow.appendChild(remarksCell);
 
     // Create remove button
     var removeCell = document.createElement('td');
@@ -735,7 +882,7 @@
 <br><br>
 <div style="background-color: #333; color: #f1f1f1; padding: 10px; overflow: hidden; position: relative; height: 30px;">
   <marquee behavior="alternate" scrollamount="5">
-      This tool has been developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, please contact via email at: 
+      This tool has been developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, please contact via email at 
     </marquee>
     <br>
      <a href="mailto:srivastava.surendra.67+CLI-BHOPAL@gmail.com" style="color: #f1f1f1; text-decoration: underline;">srivastava.surendra.67+CLI-BHOPAL@gmail.com</a>  
