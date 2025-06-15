@@ -44,6 +44,15 @@
 <!-- DeepSeek changes allowed after this line -->
 
 <body align="center">
+<div id="backendversion" data-value="versionfromthebackend"></div>
+<div id="frontendversion" data-value="0.0.1"></div>
+<script>
+  var backendversion=document.getElementById("backendversion").getAttribute("data-value");
+  var frontendversion=document.getElementById("frontendversion").getAttribute("data-value");
+  if(backendversion != frontendversion){
+    console.log("You are using old software, please download new software.");
+  }
+</script>
 
   <h1>SPEEDOMETER DATA ANALYSIS</h1>
   <br>
