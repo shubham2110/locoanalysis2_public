@@ -125,7 +125,7 @@
         <tr>
           <td>Train No:</td>
           <td><input type="text" id="form_trainNo" name="trainNo" value="" size="40"></td>
-          <td>Loco Number:</td>
+          <td>Loco Number/Base:</td>
           <td><input type="text" id="form_locoNumber" name="locoNumber" value="" size="40"></td>
         </tr>
         <tr>
@@ -148,9 +148,8 @@
         <tr>
           <td>Max Speed Attained:</td>
           <td><input type="text" id="form_topSpeed" name="form_topSpeed" value="" size="40"></td>
-          <td>Time Range of Analysis:</td>
-          <td><input type="text" id="form_timeRange" name="timeRange" value="" size="40"></td>
-          
+          <td>Over Speeding:</td> <!-- if MPSattacned is more than MPS -->
+          <td><input type="text" id="form_overSpeeding" name="overSpeeding" value="" size="40"></td>
         </tr>
         <tr>
           <td>Total Distance:</td>
@@ -161,8 +160,9 @@
         <tr>
           <td>Average Speed:</td>
           <td><input type="text" id="form_avgSpeed" name="form_avgSpeed" value="" size="40"></td>
-          <td>Over Speeding:</td> <!-- if MPSattacned is more than MPS -->
-          <td><input type="text" id="form_overSpeeding" name="overSpeeding" value="" size="40"></td>
+          <td>Time Range of Analysis:</td>
+          <td><input type="text" id="form_timeRange" name="timeRange" value="" size="40"></td>
+          
           
         </tr>
     
@@ -234,8 +234,8 @@
     
       <!-- Use inline style to allow horizontal scroll if needed (for screen only) -->
       <div id="speedRestrictionContainer" style="overflow-x: auto;">
-        <table border="1" cellpadding="5" cellspacing="0" align="center"
-               style="width: 100%; table-layout: fixed;">
+        <table border="1" cellpadding="5" cellspacing="0" align="center" >
+               <!-- style="width: 100%; table-layout: fixed;"> -->
     
           <colgroup>
             <col style="width: 15%;">
@@ -255,7 +255,7 @@
               <th>End AT</th>
               <!-- <th>Avg Speed Observed</th> -->
               <!-- <th>Distance Travelled</th> -->
-               <th colspan="2">Remakrs</th>
+               <th colspan="2">Remakrs (Caution Observed/Not Observed)</th>
               <th><a onclick=addspeedRestrictiondataRow()>+</a></th>
             </tr>
           </thead>
@@ -265,6 +265,43 @@
       </div>
     </div>
     
+    <div id="otherobservations" style="margin-bottom:20px;">
+      <h3 style="display: inline;">Irregularities and other Observations</h3>
+
+      <div id="otherobservationsContainer" style="">
+        
+          <table border="1" cellpadding="5" cellspacing="0" align="center"  
+                  style=" width:100%">   
+            <thead>
+              <tr>
+                <th width="2%">S.No.</th>
+                <th width="60%" colspan="4" >Irregularities and other observation</th>
+                <th width="3%"><a onclick=addotherobservationdataRow()>+</a></th>
+              </tr>
+            </thead>
+            <tbody id="otherobservationdata">
+            </tbody>
+          </table>
+       </div> 
+    </div>
+    
+    <div>
+      <table align="right">
+        <tr>
+          <td>
+            Analysis By:
+          </td>
+          <td>
+            <textarea name="aa" style=" width:95%; height:30px; border:none " ></textarea>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+
+
+    
     <!-- Button controls -->
     <!-- <div style="margin-bottom:10px;">
       <button id="btnTimeSpeed">Time/Speed</button>
@@ -272,11 +309,33 @@
       <button id="btnBoth">Both</button>
     </div> -->
     
+
+
     <!-- Chart containers -->
     <!-- <div id="chartdiv3" style="width: 100%; height: 500px;"></div> -->
     <div id="chartdiv" style="width: 100%; height: 500px;"></div>
     <div id="chartdiv2" style="width: 100%; height: 500px; display: none;"></div>
+
+    <br><br> <br><br> <br><br> <br><br> <br><br> <br><br><br><br> <br><br> <br><br> <br><br> <br><br> <br><br>
+<div style="background-color: #333; color: #f1f1f1;  position: relative; height: 50px; font-size: 15px;">
+  <table width="100%">
+  <tr>
+    <td width="25%">
+      Inspiration: Mr. Mukesh (PCEE/WCR/JBP)
+    </td>
+    <td width="25%">
+    Motivation: Mr. Devashish Tripathi (DRM/BPL)
+    </td>
+  
+    <td width="50%">
+      Developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, email at: 
+      <a href="mailto:srivastava.surendra.67+CLI-BHOPAL@gmail.com" style="color: #f1f1f1; text-decoration: none;">srivastava.surendra.67+CLI-BHOPAL@gmail.com</a>
+    </td>
+    </tr>
+  </table>
     
+  
+  </div>
 
     <script>
     // Global filtered data variable (default is full data)
@@ -343,6 +402,7 @@
           }
 
           const dropAmount = candidateSpeed - lowestSpeed;
+          const dropRange = candidateSpeed + " -> " + lowestSpeed;
 
           // Validate drop range
           if (dropAmount < dropMin || dropAmount > dropMax) continue;
@@ -354,6 +414,7 @@
                 var result = {};
                 result[testName + "_Point"] = candidate.datetime;
                 result[testName + "_Drop_kmph"] = parseFloat(dropAmount.toFixed(2));
+                result[testName +"_Drop_Range"] = dropRange;
                 result[testName] = true;
                 return result;
               }
@@ -365,7 +426,8 @@
             return {
             [testName]: true,
             [testName + "_Point"]: candidate.datetime,
-            [testName + "_Drop_kmph"]: parseFloat(dropAmount.toFixed(2))
+            [testName + "_Drop_kmph"]: parseFloat(dropAmount.toFixed(2)),
+            [testName + "_Drop_Range"]: dropRange
             };
         }
 
@@ -373,7 +435,8 @@
           [testName]: false,
           reason: "No valid " + testName + " pattern: rise → continuous drop (" + dropMin + "–" + dropMax + " kmph from " + speedMin + "–" + speedMax + ")",
           [testName + "_Point"]: null,
-          [testName + "_Drop_kmph"]: null
+          [testName + "_Drop_kmph"]: null,
+          [testName + "_Drop_Range"]: null
         };
       }
         
@@ -475,9 +538,9 @@
             document.getElementById('form_overSpeeding').value="Yes"
             document.getElementById('form_overSpeeding').style.color = "red";
         }else{
-          document.getElementById('form_topSpeed').style.color = "black";
-          document.getElementById('form_overSpeeding').value=""
-          document.getElementById('form_overSpeeding').style.color = "black";
+          document.getElementById('form_topSpeed').style.color = "green";
+          document.getElementById('form_overSpeeding').value="No"
+          document.getElementById('form_overSpeeding').style.color = "green";
         }
 
 
@@ -616,14 +679,14 @@
 
           if (BFT_INFO.BFT == true) {
             document.getElementById("form_bfttime").value = BFT_INFO.BFT_Point;
-            document.getElementById("form_bftspeeddrop").value = BFT_INFO.BFT_Drop_kmph;
+            document.getElementById("form_bftspeeddrop").value = BFT_INFO.BFT_Drop_Range;
           }else{
             document.getElementById("form_bfttime").value = "";
             document.getElementById("form_bftspeeddrop").value = "";
           }
           if (BPT_INFO.BPT == true) {
             document.getElementById("form_bpttime").value = BPT_INFO.BPT_Point;
-            document.getElementById("form_bptspeeddrop").value = BPT_INFO.BPT_Drop_kmph;
+            document.getElementById("form_bptspeeddrop").value = BPT_INFO.BPT_Drop_Range;
           }else{
             document.getElementById("form_bpttime").value = "";
             document.getElementById("form_bptspeeddrop").value = "";
@@ -631,6 +694,15 @@
         } catch (error) {
           console.error("An error occurred while detecting tests:", error);
         }
+
+      var form_timeRange=document.getElementById("form_timeRange");
+      if (filteredData.length > 0) {
+        var startTime = filteredData[0].date.toLocaleString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        var endTime = filteredData[filteredData.length - 1].date.toLocaleString('en-GB', { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        form_timeRange.value = startTime + " - " + endTime;
+      } else {
+        form_timeRange.value = "";
+      }
 
     }
     
@@ -863,7 +935,7 @@
 
     var remarksCell = document.createElement('td');
     remarksCell.setAttribute('colspan', '2');
-    remarksCell.innerHTML = '<textarea name="remarks" style="width:95%; height:50px;"></textarea>';
+    remarksCell.innerHTML = '<input type="text" name="remarks" style="width:95%;"></input>';
     newRow.appendChild(remarksCell);
 
     // Create remove button
@@ -885,16 +957,41 @@
   addspeedRestrictiondataRow();
   addspeedRestrictiondataRow();
 
+  function addotherobservationdataRow() {
+    var tableBody = document.getElementById('otherobservationdata');
+    var newRow = document.createElement('tr');
+
+    // Create cells with text fields
+    var sectionCell = document.createElement('td');
+    sectionCell.innerHTML = '<input type="text" name="sno" style="width:95%; box-sizing: border-box;" />';
+    newRow.appendChild(sectionCell);
+
+    var srSpeedCell = document.createElement('td');
+    srSpeedCell.setAttribute('colspan', '4');
+    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:20px; box-sizing: border-box;" ></textarea>';
+    newRow.appendChild(srSpeedCell);
+
+    // Create remove button
+    var removeCell = document.createElement('td');
+    var removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.style.cursor = 'pointer';
+    removeButton.addEventListener('click', function() {
+      newRow.remove(); // remove this row
+    });
+    removeCell.appendChild(removeButton);
+    newRow.appendChild(removeCell);
+
+    // Append the row to the table body
+    tableBody.appendChild(newRow);
+  }
+
+  addotherobservationdataRow();
+
     </script>
+
     </body>
 </html>
-<br><br>
-<div style="background-color: #333; color: #f1f1f1; padding: 10px; overflow: hidden; position: relative; height: 30px;">
-  <marquee behavior="alternate" scrollamount="5">
-      This tool has been developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, please contact via email at 
-    </marquee>
-    <br>
-     <a href="mailto:srivastava.surendra.67+CLI-BHOPAL@gmail.com" style="color: #f1f1f1; text-decoration: underline;">srivastava.surendra.67+CLI-BHOPAL@gmail.com</a>  
 
-</div>
+
 
