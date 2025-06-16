@@ -92,8 +92,8 @@
             </TD>
           </TR>
           <tr>
-            <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button></td>
-            <td colspan="1" ><button type="submit" style="width: 100%;">Apply Setting</button></td>
+            <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%%;">Hide Settings</button></td>
+            <td colspan="1" ><button type="submit" style="width: 100%%;">Apply Setting</button></td>
           </tr>
           </table>
         </form>
@@ -154,7 +154,7 @@
         <tr>
           <td>Total Distance:</td>
           <td><input type="text" id="form_totDistance" name="form_totDistance" value="" size="40"></td>
-          <td>Distance Near MPS:</td> <!-- Distance travelled near MPS i.e above 90% of MPS value-->
+          <td>Distance Near MPS:</td> <!-- Distance travelled near MPS i.e above 90%% of MPS value-->
           <td><input type="text" id="form_distanceNearMps" name="distanceNearMps" value="" size="40"></td>
         </tr>
         <tr>
@@ -235,16 +235,16 @@
       <!-- Use inline style to allow horizontal scroll if needed (for screen only) -->
       <div id="speedRestrictionContainer" style="overflow-x: auto;">
         <table border="1" cellpadding="5" cellspacing="0" align="center" >
-               <!-- style="width: 100%; table-layout: fixed;"> -->
+               <!-- style="width: 100%%; table-layout: fixed;"> -->
     
           <colgroup>
-            <col style="width: 15%;">
-            <col style="width: 15%;">
-            <col style="width: 15%;">
-            <col style="width: 15%;">
-            <col style="width: 15%;">
-            <col style="width: 15%;">
-            <col style="width: 5%;">
+            <col style="width: 15%%;">
+            <col style="width: 15%%;">
+            <col style="width: 15%%;">
+            <col style="width: 15%%;">
+            <col style="width: 15%%;">
+            <col style="width: 15%%;">
+            <col style="width: 5%%;">
           </colgroup>
     
           <thead>
@@ -271,12 +271,12 @@
       <div id="otherobservationsContainer" style="">
         
           <table border="1" cellpadding="5" cellspacing="0" align="center"  
-                  style=" width:100%">   
+                  style=" width:100%%;">   
             <thead>
               <tr>
-                <th width="2%">S.No.</th>
-                <th width="60%" colspan="4" >Irregularities and other observation</th>
-                <th width="3%"><a onclick=addotherobservationdataRow()>+</a></th>
+                <th width="2%%">S.No.</th>
+                <th width="60%%" colspan="4" >Irregularities and other observation</th>
+                <th width="3%%"><a onclick=addotherobservationdataRow()>+</a></th>
               </tr>
             </thead>
             <tbody id="otherobservationdata">
@@ -292,7 +292,7 @@
             Analysis By:
           </td>
           <td>
-            <textarea name="aa" style=" width:95%; height:30px; border:none " ></textarea>
+            <textarea name="aa" style=" width:95%%; height:30px; border:none " ></textarea>
           </td>
         </tr>
       </table>
@@ -310,32 +310,14 @@
     </div> -->
     
 
+    <br><br><br><br><br><br><br>
 
     <!-- Chart containers -->
-    <!-- <div id="chartdiv3" style="width: 100%; height: 500px;"></div> -->
-    <div id="chartdiv" style="width: 100%; height: 500px;"></div>
-    <div id="chartdiv2" style="width: 100%; height: 500px; display: none;"></div>
+    <!-- <div id="chartdiv3" style="width: 100%%; height: 500px;"></div> -->
+    <div id="chartdiv" style="width: 100%%; height: 500px;"></div>
+    <div id="chartdiv2" style="width: 100%%; height: 500px; display: none;"></div>
 
-    <br><br> <br><br> <br><br> <br><br> <br><br> <br><br><br><br> <br><br> <br><br> <br><br> <br><br> <br><br>
-<div style="background-color: #333; color: #f1f1f1;  position: relative; height: 50px; font-size: 15px;">
-  <table width="100%">
-  <tr>
-    <td width="25%">
-      Inspiration: Mr. Mukesh (PCEE/WCR/JBP)
-    </td>
-    <td width="25%">
-    Motivation: Mr. Devashish Tripathi (DRM/BPL)
-    </td>
-  
-    <td width="50%">
-      Developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, email at: 
-      <a href="mailto:srivastava.surendra.67+CLI-BHOPAL@gmail.com" style="color: #f1f1f1; text-decoration: none;">srivastava.surendra.67+CLI-BHOPAL@gmail.com</a>
-    </td>
-    </tr>
-  </table>
-    
-  
-  </div>
+    <div id="bottom"></div>
 
     <script>
     // Global filtered data variable (default is full data)
@@ -910,32 +892,32 @@
 
     // Create cells with text fields
     var sectionCell = document.createElement('td');
-    sectionCell.innerHTML = '<input type="text" name="section" style="width:95%;" />';
+    sectionCell.innerHTML = '<input type="text" name="section" style="width:95%%;" />';
     newRow.appendChild(sectionCell);
 
     var srSpeedCell = document.createElement('td');
-    srSpeedCell.innerHTML = '<input type="text" name="srSpeed" style="width:95%;" />';
+    srSpeedCell.innerHTML = '<input type="text" name="srSpeed" style="width:95%%;" />';
     newRow.appendChild(srSpeedCell);
 
     var startFromCell = document.createElement('td');
-    startFromCell.innerHTML = '<input type="text" name="startFrom" style="width:95%;" />';
+    startFromCell.innerHTML = '<input type="text" name="startFrom" style="width:95%%;" />';
     newRow.appendChild(startFromCell);
 
     var endAtCell = document.createElement('td');
-    endAtCell.innerHTML = '<input type="text" name="endAt" style="width:95%;" />';
+    endAtCell.innerHTML = '<input type="text" name="endAt" style="width:95%%;" />';
     newRow.appendChild(endAtCell);
 
     // var avgSpeedObsCell1 = document.createElement('td');
-    // avgSpeedObsCell1.innerHTML = '<input type="text" name="avgSpeedObs1" style="width:95%;" />';
+    // avgSpeedObsCell1.innerHTML = '<input type="text" name="avgSpeedObs1" style="width:95%%;" />';
     // newRow.appendChild(avgSpeedObsCell1);
 
     // var avgSpeedObsCell2 = document.createElement('td');
-    // avgSpeedObsCell2.innerHTML = '<input type="text" name="avgSpeedObs2" style="width:95%;" />';
+    // avgSpeedObsCell2.innerHTML = '<input type="text" name="avgSpeedObs2" style="width:95%%;" />';
     // newRow.appendChild(avgSpeedObsCell2);
 
     var remarksCell = document.createElement('td');
     remarksCell.setAttribute('colspan', '2');
-    remarksCell.innerHTML = '<input type="text" name="remarks" style="width:95%;"></input>';
+    remarksCell.innerHTML = '<input type="text" name="remarks" style="width:95%%;"></input>';
     newRow.appendChild(remarksCell);
 
     // Create remove button
@@ -963,12 +945,12 @@
 
     // Create cells with text fields
     var sectionCell = document.createElement('td');
-    sectionCell.innerHTML = '<input type="text" name="sno" style="width:95%; box-sizing: border-box;" />';
+    sectionCell.innerHTML = '<input type="text" name="sno" style="width:95%%; box-sizing: border-box;" />';
     newRow.appendChild(sectionCell);
 
     var srSpeedCell = document.createElement('td');
     srSpeedCell.setAttribute('colspan', '4');
-    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:20px; box-sizing: border-box;" ></textarea>';
+    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%%; height:20px; box-sizing: border-box;" ></textarea>';
     newRow.appendChild(srSpeedCell);
 
     // Create remove button
@@ -988,10 +970,36 @@
 
   addotherobservationdataRow();
 
+  function populateBottomDiv() {
+      const bottomDiv = document.getElementById("bottom");
+      if (!bottomDiv) return;
+      bottomDiv.style.backgroundColor = "#333";
+      bottomDiv.style.color = "#f1f1f1";
+      bottomDiv.style.position = "relative";
+      bottomDiv.style.height = "50px";
+      bottomDiv.style.fontSize = "15px";
+
+      bottomDiv.innerHTML = "<table width='100%%' style='height: 100%%;'>" +
+        "<tr>" +
+          "<td width='25%%'>" +
+        "Inspiration: Mr. Mukesh (PCEE/WCR/JBP)" +
+          "</td>" +
+          "<td width='25%%'>" +
+        "Motivation: Mr. Devashish Tripathi (DRM/BPL)" +
+          "</td>" +
+          "<td width='50%%'>" +
+        "Developed under the guidance of Mr. Surendra Srivastava. For any suggestion or issues, email at: " +
+        "<a href='mailto:srivastava.surendra.67+CLI-BHOPAL@gmail.com' " +
+          "style='color: #f1f1f1; text-decoration: none;'>" +
+          "srivastava.surendra.67+CLI-BHOPAL@gmail.com" +
+        "</a>" +
+          "</td>" +
+        "</tr>" +
+      "</table>";
+    }
+    
+    populateBottomDiv();
     </script>
 
     </body>
 </html>
-
-
-
