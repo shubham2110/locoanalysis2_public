@@ -43,7 +43,7 @@
     <!-- Chart code -->
 <!-- DeepSeek changes allowed after this line -->
 
-<body align="center" style="background: linear-gradient(to bottom, #fdfcfb, #e2e1e0);" >
+<body align="center"  style="background: linear-gradient(to bottom, #fdfcfb, #e2e1e0);" >
 <div id="backendversion" data-value="versionfromthebackend"></div>
 <div id="frontendversion" data-value="0.0.1"></div>
 <script>
@@ -60,10 +60,10 @@
 </div>
 
 
-<br>
-
-<!-- Filter Form -->
-<div id="filter" style="margin-bottom:20px;">
+  <br>
+  
+      <!-- Filter Form -->
+      <div id="filter" style="margin-bottom:20px;">
         <IMG id="toggleFilterBtn" SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAk5JREFUOE+VU79rVEEQnpm3XN6dhYVoJUryB5zk7Uv0UqjRQqwkMSpYiIWChaigIJo6iBIQVNBKtJCgRKKNYmEUEU8vb99d7h/wB9qphaK3d+7u6B7vQhJPiFssy3yz3858+w3CP5aU8iQzTyIiA8AZpdSVbqnYCRaLxVW5XG6UiB5VKpUvUsqEmY97HBGvKaXiwcHBNcaY3caYmXq9/qON+U1KWQCAJwAgAGADIt6y1h4Lw3C9x1ut1idEvM7MhwHgAwAYANillPrZJoii6AAinlJKDUVRtJmIRq21d6rV6rzH+/v7NyHiQQCYSdP0jZTyFTNfTtP0XpvAl2atrTPz3jRNX/vYwMBAHzMP+zMRzVYqlbfZY1sQ8X4QBEXf6oIGcRxPOOdEmqZnpZT7mDmntX7oL4VhuIeImkmSTMdxfAkAfiVJMt7WQEp5AgAOOed6hRA7AeCbtbZERF+ZeZtPYubnRLSWiF7+KX21MeYpEfmKbnuCFjNv7enpmS+Xy40oio5qrafy+fy4UupcJvKFRqMxUSgU9idJcrNUKuWbzabX5cVfBFLKI2EY3tVan18pQbsFAOhzzg0LIb5ba4cA4DMibs9aeEZE67q20DHSYhHjOB5zzoVa6wceLxQKIwDQ8CJGUXSRiMyCiIu/0Tk3Vq1Wy1ms1zm3w2tojJmt1WrvMk94gaeXfONyIwHASBAEU3Nzc7UVGaljZUQMmHnjcitrrT8GQXDDWxkR3zOzXWJl/4ofJiHEiBDi8X8PU7cxzQw2mWGnlVJXu+X9BuCMaVLQARlOAAAAAElFTkSuQmCC" />
           
         <!-- <h3 style="display: inline; opacity: 1;">
@@ -391,7 +391,6 @@
           const dropAmount = candidateSpeed - lowestSpeed;
           const dropRange = candidateSpeed + " → " + lowestSpeed;
 
-
           // Validate drop range
           if (dropAmount < dropMin || dropAmount > dropMax) continue;
 
@@ -650,9 +649,9 @@
           var BPT_INFO = detectTest(filteredData, {
             testName: 'BPT',
             speedMin: 40,
-            speedMax: 76,
-            dropMin: 30,
-            dropMax: 50,
+            speedMax: 120,
+            dropMin: 20,
+            dropMax: 100,
             requireRecovery: false
           });
 
@@ -661,7 +660,7 @@
             speedMin: 11,
             speedMax: 20,
             dropMin: 4,
-            dropMax: 10,
+            dropMax: 20,
             requireRecovery: true
           });
 
@@ -1006,8 +1005,6 @@
 
     populateBottomDiv();
     </script>
-
-
 
     </body>
 </html>
