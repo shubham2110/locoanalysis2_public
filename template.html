@@ -530,8 +530,6 @@
           avgSpeed = ((totalDistanceValue / totalTimeInSeconds) * 3600).toFixed(3); // Convert m/s to km/h and restrict to 3 decimal places
         }
 
-        const distanceNearTopSpeed = calculateDistanceNearTopSpeed(filteredData, topSpeedValue);
-        document.getElementById('form_distanceNearMps').value = distanceNearTopSpeed + " KM";
 
         document.getElementById('form_avgSpeed').value=avgSpeed + " KMPH";
         document.getElementById('form_totDistance').value = totalDistanceValue + " KM";
@@ -547,6 +545,12 @@
           document.getElementById('form_topSpeed').style.color = "green";
           document.getElementById('form_overSpeeding').value="No"
           document.getElementById('form_overSpeeding').style.color = "green";
+        }
+        const distanceNearTopSpeed = calculateDistanceNearTopSpeed(filteredData, form_mps);
+        if(distanceNearTopSpeed > 0){
+          document.getElementById('form_distanceNearMps').value = distanceNearTopSpeed + " KM";
+        }else{
+          document.getElementById('form_distanceNearMps').value = "";
         }
 
 
