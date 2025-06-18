@@ -173,12 +173,12 @@
     
       <br>
   
-        <tr>
-          <td>Late Controlling:</td>
-          <td><input type="text" id="form_lateControlling" name="lateControlling" value="" size="40"></td>
+        <!-- <tr> -->
+          <!-- <td>Late Controlling:</td>
+          <td><input type="text" id="form_lateControlling" name="lateControlling" value="" size="40"></td> -->
           <!-- <td>Abrupt Breaking:</td>
           <td><input type="text" id="form_abruptBreaking" name="abruptBreaking" value="" size="40"></td> -->
-        </tr>
+        <!-- </tr> -->
         <!-- <tr>
           
            <td>Poor Running:</td>
@@ -483,6 +483,23 @@
             distanceChart.data = filteredData;
         }
     }
+
+    function calculateDistanceNearTopSpeed(filteredData, topSpeedValue) {
+        const thresholdSpeed = topSpeedValue * 0.95; 
+        let totalDistance = 0;
+
+        for (let i = 1; i < filteredData.length; i++) {
+          const currentSpeed = filteredData[i].kmph;
+          const previousDistance = filteredData[i - 1].distance_cumm;
+          const currentDistance = filteredData[i].distance_cumm;
+
+          if (currentSpeed >= thresholdSpeed) {
+            totalDistance += Math.abs(currentDistance - previousDistance);
+          }
+        }
+
+        return (totalDistance / 1000).toFixed(3); 
+      }
     
     // Function to update analysis table based on filteredData
     function updateAnalysis() {
@@ -513,6 +530,8 @@
           avgSpeed = ((totalDistanceValue / totalTimeInSeconds) * 3600).toFixed(3); // Convert m/s to km/h and restrict to 3 decimal places
         }
 
+        const distanceNearTopSpeed = calculateDistanceNearTopSpeed(filteredData, topSpeedValue);
+        document.getElementById('form_distanceNearMps').value = distanceNearTopSpeed + " KM";
 
         document.getElementById('form_avgSpeed').value=avgSpeed + " KMPH";
         document.getElementById('form_totDistance').value = totalDistanceValue + " KM";
