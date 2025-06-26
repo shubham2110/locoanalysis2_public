@@ -61,11 +61,21 @@
 
 
   <br>
-  
+  <div id="textdata" style="font-size: 1em;font-weight: bold;">
+    <style>
+      input[type="text"], textarea {
+      font-size: 1.1em;
+      font-weight: bold;
+      }
+      tr{
+        text-align: left;
+      }
+    </style>
       <!-- Filter Form -->
-      <div id="filter" style="margin-bottom:20px;">
-        <IMG id="toggleFilterBtn" SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAk5JREFUOE+VU79rVEEQnpm3XN6dhYVoJUryB5zk7Uv0UqjRQqwkMSpYiIWChaigIJo6iBIQVNBKtJCgRKKNYmEUEU8vb99d7h/wB9qphaK3d+7u6B7vQhJPiFssy3yz3858+w3CP5aU8iQzTyIiA8AZpdSVbqnYCRaLxVW5XG6UiB5VKpUvUsqEmY97HBGvKaXiwcHBNcaY3caYmXq9/qON+U1KWQCAJwAgAGADIt6y1h4Lw3C9x1ut1idEvM7MhwHgAwAYANillPrZJoii6AAinlJKDUVRtJmIRq21d6rV6rzH+/v7NyHiQQCYSdP0jZTyFTNfTtP0XpvAl2atrTPz3jRNX/vYwMBAHzMP+zMRzVYqlbfZY1sQ8X4QBEXf6oIGcRxPOOdEmqZnpZT7mDmntX7oL4VhuIeImkmSTMdxfAkAfiVJMt7WQEp5AgAOOed6hRA7AeCbtbZERF+ZeZtPYubnRLSWiF7+KX21MeYpEfmKbnuCFjNv7enpmS+Xy40oio5qrafy+fy4UupcJvKFRqMxUSgU9idJcrNUKuWbzabX5cVfBFLKI2EY3tVan18pQbsFAOhzzg0LIb5ba4cA4DMibs9aeEZE67q20DHSYhHjOB5zzoVa6wceLxQKIwDQ8CJGUXSRiMyCiIu/0Tk3Vq1Wy1ms1zm3w2tojJmt1WrvMk94gaeXfONyIwHASBAEU3Nzc7UVGaljZUQMmHnjcitrrT8GQXDDWxkR3zOzXWJl/4ofJiHEiBDi8X8PU7cxzQw2mWGnlVJXu+X9BuCMaVLQARlOAAAAAElFTkSuQmCC" />
-          
+      <div id="filter" style="margin-bottom:20px; align-items: center;justify-content: center; justify-items: center;">
+        <div style="display: flex; justify-content: center; text-align: center;">
+        <IMG  id="toggleFilterBtn" SRC="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAk5JREFUOE+VU79rVEEQnpm3XN6dhYVoJUryB5zk7Uv0UqjRQqwkMSpYiIWChaigIJo6iBIQVNBKtJCgRKKNYmEUEU8vb99d7h/wB9qphaK3d+7u6B7vQhJPiFssy3yz3858+w3CP5aU8iQzTyIiA8AZpdSVbqnYCRaLxVW5XG6UiB5VKpUvUsqEmY97HBGvKaXiwcHBNcaY3caYmXq9/qON+U1KWQCAJwAgAGADIt6y1h4Lw3C9x1ut1idEvM7MhwHgAwAYANillPrZJoii6AAinlJKDUVRtJmIRq21d6rV6rzH+/v7NyHiQQCYSdP0jZTyFTNfTtP0XpvAl2atrTPz3jRNX/vYwMBAHzMP+zMRzVYqlbfZY1sQ8X4QBEXf6oIGcRxPOOdEmqZnpZT7mDmntX7oL4VhuIeImkmSTMdxfAkAfiVJMt7WQEp5AgAOOed6hRA7AeCbtbZERF+ZeZtPYubnRLSWiF7+KX21MeYpEfmKbnuCFjNv7enpmS+Xy40oio5qrafy+fy4UupcJvKFRqMxUSgU9idJcrNUKuWbzabX5cVfBFLKI2EY3tVan18pQbsFAOhzzg0LIb5ba4cA4DMibs9aeEZE67q20DHSYhHjOB5zzoVa6wceLxQKIwDQ8CJGUXSRiMyCiIu/0Tk3Vq1Wy1ms1zm3w2tojJmt1WrvMk94gaeXfONyIwHASBAEU3Nzc7UVGaljZUQMmHnjcitrrT8GQXDDWxkR3zOzXWJl/4ofJiHEiBDi8X8PU7cxzQw2mWGnlVJXu+X9BuCMaVLQARlOAAAAAElFTkSuQmCC" />
+        </div>
         <!-- <h3 style="display: inline; opacity: 1;">
            Filter Analysis Data</h3> -->
         <!-- <button id="toggleFilterBtn" style="margin-left:20px; display: inline; opacity: 0.1;">Hide/Unhide</button> -->
@@ -108,12 +118,12 @@
 
     <div id="reportform" style="margin-bottom:20px;">
     <form>
-      <table border="1" cellpadding="5" align="center">
-        <tr>
+      <table border="1" cellpadding="5" align="center" >
+        <tr style="text-align: left;">
           <td>Journey Date:</td>
-          <td><input type="text" id="form_journeyDate" name="journeyDate" value="" size="40"></td>
+          <td><input type="text" id="form_journeyDate" name="journeyDate" value="" ></td>
           <td>Analysis Date:</td>
-          <td><input type="text" id="reportId" name="reportId" value="" size="40">
+          <td><input type="text" id="reportId" name="reportId" value="" >
             <script>
                 let d = new Date(), f = n => ('0' + n).slice(-2);
                 document.getElementById('reportId').value = f(d.getDate()) + '/' + f(d.getMonth() + 1) + '/' + d.getFullYear();
@@ -123,15 +133,15 @@
 
         <tr>
           <td>LP Name/Desig/Headquater:</td>
-          <td><input type="text"  id="form_lpName" name="lpName" value="" size="40"></td>
+          <td><input type="text"  id="form_lpName" name="lpName" value="" ></td>
           <td>ALP Name/Headquater:</td>
-          <td><input type="text" id="form_alpName" name="alpName" value="" size="40"></td>
+          <td><input type="text" id="form_alpName" name="alpName" value="" ></td>
         </tr>
         <tr>
           <td>Train No:</td>
-          <td><input type="text" id="form_trainNo" name="trainNo" value="" size="40"></td>
+          <td><input type="text" id="form_trainNo" name="trainNo" value="" ></td>
           <td>Loco Number/Base:</td>
-          <td><input type="text" id="form_locoNumber" name="locoNumber" value="" size="40"></td>
+          <td><input type="text" id="form_locoNumber" name="locoNumber" value="" ></td>
         </tr>
         <tr>
           <td>Type of Train:</td>
@@ -142,31 +152,31 @@
             </select>
             </td>
             <td>MPS:</td>
-            <td><input type="text" id="form_Mps" name="Mps" value="" size="40" onchange="updateAnalysis()"></td>
+            <td><input type="text" id="form_Mps" name="Mps" value=""  onchange="updateAnalysis()"></td>
         </tr>
         <tr>
           <td>Assigned CLI:</td>
-          <td><input type="text" id="form_assignedcli" name="assignedcli" value="" size="40"></td>
+          <td><input type="text" id="form_assignedcli" name="assignedcli" value="" ></td>
           <td>Section:</td>
-          <td><input type="text" id="form_section" name="section" value="" size="40"></td>
+          <td><input type="text" id="form_section" name="section" value="" ></td>
         </tr>
         <tr>
           <td>Max Speed Attained:</td>
-          <td><input type="text" id="form_topSpeed" name="form_topSpeed" value="" size="40"></td>
+          <td><input type="text" id="form_topSpeed" name="form_topSpeed" value="" ></td>
           <td>Over Speeding:</td> <!-- if MPSattacned is more than MPS -->
-          <td><input type="text" id="form_overSpeeding" name="overSpeeding" value="" size="40"></td>
+          <td><input type="text" id="form_overSpeeding" name="overSpeeding" value="" ></td>
         </tr>
         <tr>
           <td>Total Distance:</td>
-          <td><input type="text" id="form_totDistance" name="form_totDistance" value="" size="40"></td>
+          <td><input type="text" id="form_totDistance" name="form_totDistance" value="" ></td>
           <td>Distance Near MPS:</td> <!-- Distance travelled near MPS i.e above 90% of MPS value-->
-          <td><input type="text" id="form_distanceNearMps" name="distanceNearMps" value="" size="40"></td>
+          <td><input type="text" id="form_distanceNearMps" name="distanceNearMps" value="" ></td>
         </tr>
         <tr>
           <td>Average Speed:</td>
-          <td><input type="text" id="form_avgSpeed" name="form_avgSpeed" value="" size="40"></td>
+          <td><input type="text" id="form_avgSpeed" name="form_avgSpeed" value="" ></td>
           <td>Time Range of Analysis:</td>
-          <td><input type="text" id="form_timeRange" name="timeRange" value="" size="40"></td>
+          <td><input type="text" id="form_timeRange" name="timeRange" value="" size="28" style="font-size: 0.8em; " ></td>
           
           
         </tr>
@@ -175,27 +185,27 @@
   
         <!-- <tr> -->
           <!-- <td>Late Controlling:</td>
-          <td><input type="text" id="form_lateControlling" name="lateControlling" value="" size="40"></td> -->
+          <td><input type="text" id="form_lateControlling" name="lateControlling" value="" ></td> -->
           <!-- <td>Abrupt Breaking:</td>
-          <td><input type="text" id="form_abruptBreaking" name="abruptBreaking" value="" size="40"></td> -->
+          <td><input type="text" id="form_abruptBreaking" name="abruptBreaking" value="" ></td> -->
         <!-- </tr> -->
         <!-- <tr>
           
            <td>Poor Running:</td>
-          <td><input type="text" id="form_poorRunning" name="poorRunning" value="" size="40"></td> 
+          <td><input type="text" id="form_poorRunning" name="poorRunning" value="" ></td> 
         </tr> -->
         <!-- <tr>
           <td>Improper BPT:</td>
-          <td><input type="text" id="form_improperBpt" name="improperBpt" value="" size="40"></td>
+          <td><input type="text" id="form_improperBpt" name="improperBpt" value="" ></td>
           <td>SR Overspeed:</td>
-          <td><input type="text" id="form_srOverspeed" name="srOverspeed" value="" size="40"></td>
+          <td><input type="text" id="form_srOverspeed" name="srOverspeed" value="" ></td>
         </tr> -->
         <tr>
-          <td>BFT Time<input type="text" id="form_bfttime" name="bpttime" value=""></td>
-          <td>Speed Drop <input type="text" id="form_bftspeeddrop" name="bftspeeddrop" value=""></td>
+          <td>BFT Time<input type="text" id="form_bfttime" name="bpttime" value="" size="15"></td>
+          <td>Speed Drop <input type="text" id="form_bftspeeddrop" name="bftspeeddrop" value="" size="10"></td>
        
-          <td>BPT Time<input type="text" id="form_bpttime" name="bpttime" value=""></td>
-          <td>Speed Drop <input type="text" id="form_bptspeeddrop" name="bptspeeddrop" value=""></td>
+          <td>BPT Time<input type="text" id="form_bpttime" name="bpttime" value="" size="15"></td>
+          <td>Speed Drop <input type="text" id="form_bptspeeddrop" name="bptspeeddrop" value="" size="10"></td>
           </tr>
       </table>
       <br>
@@ -205,8 +215,10 @@
 
 
     <div id="analysis" style="margin-bottom:20px;">
-      <h3 style="display: inline;">SPEED WHILE APPROACHING STOP SIGNAL AT DANGER</h3>
-      <button id="toggleStopDetailsBtn" style="margin-left:20px; display: inline; opacity: 0.1;">Hide/Unhide</button>
+      <div style="display: flex; justify-content: center; text-align: center;">
+        <h3 style="display: inline;">SPEED WHILE APPROACHING STOP SIGNAL AT DANGER</h3>
+       <button id="toggleStopDetailsBtn" style="margin-left:20px; display: inline; opacity: 0.1;">Hide/Unhide</button>
+      </div>
       <div id="stopDetailsContainer">
         <table border="1" cellpadding="5" cellspacing="0" align="center">
           <thead>
@@ -229,13 +241,15 @@
     </div>
 
     <div id="analysis" style="margin-bottom:20px;">
-      <h3 style="display: inline;">SPEED RESTRICTIONS OBSERVED BY THE LP</h3>
+      <div style="display: flex; justify-content: center; text-align: center;">
+      <h3 >SPEED RESTRICTIONS OBSERVED BY THE LP</h3>
       <button id="toggleSpeedRestrictionBtn" style="margin-left:20px; display: inline; opacity: 0.1;">
         Hide/Unhide
       </button>
       <button id="AddRowSpeedRestrictionBtn" style="margin-left:20px; display: inline; opacity: 0.1;">
         Add Row
       </button>
+    </div>
     
       <!-- Use inline style to allow horizontal scroll if needed (for screen only) -->
       <div id="speedRestrictionContainer" style="overflow-x: auto;">
@@ -271,8 +285,10 @@
     </div>
     
     <div id="otherobservations" style="margin-bottom:20px;">
-      <h3 style="display: inline;">Irregularities and other Observations</h3>
+      <div style="display: flex; justify-content: center; text-align: center;">
 
+      <h3 style="display: inline;">Irregularities and other Observations</h3>
+        </div>
       <div id="otherobservationsContainer" style="">
         
           <table border="1" cellpadding="5" cellspacing="0" align="center"  
@@ -317,6 +333,7 @@
 
     <br><br><br><br><br><br><br>
 
+  </div>
     <!-- Chart containers -->
     <!-- <div id="chartdiv3" style="width: 100%; height: 500px;"></div> -->
     <div id="chartdiv" style="width: 100%; height: 500px;"></div>
@@ -628,26 +645,26 @@
             cellMax1000.innerText = localMax1000;
             var color = getSpeedColor(type, "1000mtr" , localMax1000);
             cellMax1000.style.color = color;
-            if(color == "red"){breakingtechnique="Abrupt"}            
+            if(color == "red"){breakingtechnique="Late"}            
 
             var cellMax500 = document.createElement("td");
             cellMax500.innerText = localMax500;
             var color = getSpeedColor(type, "500mtr" , localMax500);
             cellMax500.style.color = color;
-            if(color == "red"){breakingtechnique="Abrupt"}
+            if(color == "red"){breakingtechnique="Late"}
 
             var cellMax100 = document.createElement("td");
             cellMax100.innerText = localMax100;
             var color = getSpeedColor(type, "100mtr" , localMax100);
             cellMax100.style.color = color;
-            if(color == "red"){breakingtechnique="Abrupt"}
+            if(color == "red"){breakingtechnique="Late"}
 
             
             var cellMax10 = document.createElement("td");
             cellMax10.innerText = localMax10;
             var color = getSpeedColor(type, "10mtr" , localMax10);
             cellMax10.style.color = color;
-            if(color == "red"){breakingtechnique="Abrupt"}
+            if(color == "red"){breakingtechnique="Late"}
             
             // var cellSpeedatControlling = document.createElement("td");
             // cellSpeedatControlling.innerHTML = "<input type=text name=SpeedatControlling >"
@@ -978,7 +995,7 @@
 
     var srSpeedCell = document.createElement('td');
     srSpeedCell.setAttribute('colspan', '4');
-    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:20px; box-sizing: border-box;" ></textarea>';
+    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:20px; box-sizing: border-box; resize:vertical" ></textarea>';
     newRow.appendChild(srSpeedCell);
 
     // Create remove button
