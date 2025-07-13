@@ -370,7 +370,7 @@
 
         const startTime = dataWithTime[0].timestamp;
         const first20Min = dataWithTime.filter(
-          d => d.timestamp - startTime <= 1800
+          d => d.timestamp - startTime <= 1500
         );
 
         for (let i = 5; i < first20Min.length - 10; i++) {
