@@ -370,7 +370,7 @@
 
         const startTime = dataWithTime[0].timestamp;
         const first20Min = dataWithTime.filter(
-          d => d.timestamp - startTime <= 1200
+          d => d.timestamp - startTime <= 1800
         );
 
         for (let i = 5; i < first20Min.length - 10; i++) {
@@ -697,7 +697,7 @@
 
           var BFT_INFO = detectTest(filteredData, {
             testName: 'BFT',
-            speedMin: 11,
+            speedMin: 9,
             speedMax: 20,
             dropMin: 4,
             dropMax: 20,
