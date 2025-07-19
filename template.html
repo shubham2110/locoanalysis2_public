@@ -1328,7 +1328,14 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
     if (matchFile && matchFile[1]) {
       fileName = matchFile[1] + "_analysed";
     }
-  } catch (e) {}
+  } catch (e) { console.log(e); }
+  try{
+
+	journeydate=document.getElementById('form_journeyDate').value.replaceAll('/','_');
+	lpname=document.getElementById('form_lpName').value.replaceAll(' ','_').replaceAll('/','_');  
+	trainno=document.getElementById('form_trainNo').value.replaceAll(' ','_').replaceAll('/','_');
+	fileName=journeydate+'_'+lpname+'_'+trainno;	  
+  }catch(e) { console.log(e); }
   a.download = fileName + ".html";
   document.body.appendChild(a);
   a.click();
