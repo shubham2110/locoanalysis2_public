@@ -1251,9 +1251,9 @@ function addFilterSpeedRestrictionRow(section="", srSpeed="", startFrom="", endA
   var tr = document.createElement('tr');
   tr.innerHTML =
     '<td><input type="text" name="filter_section" style="width:95%;" value="' + section + '"></td>' +
-    '<td><input type="number" name="filter_srSpeed" style="width:95%;" value="' + srSpeed + '"></td>' +
-    '<td><input type="number" name="filter_startFrom" style="width:95%;" value="' + startFrom + '"></td>' +
-    '<td><input type="number" name="filter_endAt" style="width:95%;" value="' + endAt + '"></td>' +
+    '<td><input type="text" name="filter_srSpeed" style="width:95%;" value="' + srSpeed + '"></td>' +
+    '<td><input type="text" name="filter_startFrom" style="width:95%;" value="' + startFrom + '"></td>' +
+    '<td><input type="text" name="filter_endAt" style="width:95%;" value="' + endAt + '"></td>' +
     '<td><button type="button" onclick="this.closest(\'tr\').remove()">-</button></td>';
   tbody.appendChild(tr);
 }
