@@ -564,13 +564,26 @@
         const srSpeedMatch = srSpeedText && srSpeedText.match(/[\d.]+/);
         const srSpeed = srSpeedMatch ? parseFloat(srSpeedMatch[0]) : NaN;
 
-        const startFromText = row.querySelector('input[name="filter_startFrom"]')?.value;
-        const startFromMatch = startFromText && startFromText.match(/[\d.]+/);
-        const startFrom = startFromMatch ? parseFloat(startFromMatch[0]) : NaN;
+        // const startFromText = row.querySelector('input[name="filter_startFrom"]')?.value;
+	
+        // const startFromMatch = startFromText && startFromText.match(/[\d.]+/);
+        // const startFrom = startFromMatch ? parseFloat(startFromMatch[0]) : NaN;
 
-        const endAtText = row.querySelector('input[name="filter_endAt"]')?.value;
-        const endAtMatch = endAtText && endAtText.match(/[\d.]+/);
-        const endAt = endAtMatch ? parseFloat(endAtMatch[0]) : NaN;
+	const startFromtext = row.querySelector('input[name="filter_startFrom"]')?.value || '';
+	const startFromval = startFromtext.replace(/[^\d./]/g, '').split('/');	
+	const startFrom = startFromval.length === 2
+	  ? (v => v[1]/32 > 1 ? Math.ceil(v[0]) : v[0] + v[1]/32)(startFromval.map(parseFloat))
+	  : parseFloat(startFromval[0]) || NaN;
+
+        // const endAtText = row.querySelector('input[name="filter_endAt"]')?.value;
+        // const endAtMatch = endAtText && endAtText.match(/[\d.]+/);
+        // const endAt = endAtMatch ? parseFloat(endAtMatch[0]) : NaN;
+
+	const endAttext = row.querySelector('input[name="filter_endAt"]')?.value || '';
+	const endAtval = endAttext.replace(/[^\d./]/g, '').split('/');
+	const endAt = endAtval.length === 2
+	  ? (v => v[1]/32 > 1 ? Math.ceil(v[0]) : v[0] + v[1]/32)(endAtval.map(parseFloat))
+	  : parseFloat(endAtval[0]) || NaN;
 
         if (!section) {
           section = sectionCounter.toString();
@@ -578,7 +591,7 @@
         }
 
         if (!isNaN(srSpeed) && !isNaN(startFrom) && !isNaN(endAt)) {
-          restrictions.push({ section, srSpeed, startFrom, endAt });
+          restrictions.push({ section, srSpeed, startFrom, endAt ,startFromtext, endAttext });
         }
       });
       return restrictions;
@@ -610,15 +623,15 @@
             d.distance_cumm_positive <= maxMeter &&
             d.kmph > restriction.srSpeed
           );
-          const remarks = exceeded ? "Not Observed" : "Observed";
+          const remarks = exceeded ? "Not Observed (pls confirm by manual check)" : "Observed";
 
           // Create row
           const newRow = document.createElement('tr');
             newRow.innerHTML =
             '<td><input type="text" name="section" style="width:95%;" value="' + restriction.section + '" /></td>' +
             '<td><input type="text" name="srSpeed" style="width:95%;" value="' + restriction.srSpeed + '" /></td>' +
-            '<td><input type="text" name="startFrom" style="width:95%;" value="' + restriction.startFrom + '" /></td>' +
-            '<td><input type="text" name="endAt" style="width:95%;" value="' + restriction.endAt + '" /></td>' +
+            '<td><input type="text" name="startFrom" style="width:95%;" value="' + restriction.startFromtext + '" /></td>' +
+            '<td><input type="text" name="endAt" style="width:95%;" value="' + restriction.endAttext + '" /></td>' +
             '<td colspan="2"><input type="text" name="remarks" style="width:95%;" value="' + remarks + '" /></td>' +
             '<td><button type="button" style="cursor:pointer;">-</button></td>';
           // Allow manual removal
