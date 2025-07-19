@@ -52,6 +52,8 @@
   if(backendversion != frontendversion){
     console.log("You are using old software, please download new software.");
   }
+  
+  var final_report=false;
 </script>
 
 <div style="display: flex; align-items: center;justify-content: center;">
@@ -106,7 +108,28 @@
               </select>
             </TD>
           </TR>
+         
           <tr>
+            <td colspan="2">
+              <div>
+                <b>Speed Restrictions (for analysis):</b>
+                <table border="1" width="100%" id="filterSpeedRestrictionTable">
+                  <thead>
+                    <tr>
+                      <th>Section</th>
+                      <th>SR Speed</th>
+                      <th>Start KM</th>
+                      <th>End KM</th>
+                      <th><button type="button" id="addFilterSpeedRestrictionRow">+</button></th>
+                    </tr>
+                  </thead>
+                  <tbody id="filterSpeedRestrictionRows">
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+           <tr>
             <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button></td>
             <td colspan="1" ><button type="submit" style="width: 100%;">Apply Setting</button></td>
           </tr>
@@ -368,13 +391,14 @@
           timestamp: parseDateTime(d.datetime).getTime() / 1000
         }));
 
-        const startTime = dataWithTime[0].timestamp;
-        const first20Min = dataWithTime.filter(
-          d => d.timestamp - startTime <= 1500
+        // Filter for first 25 km (25000 meters) instead of 25 minutes
+        const startDistance = dataWithTime[0].distance_cumm_positive;
+        const first25Km = dataWithTime.filter(
+          d => (d.distance_cumm_positive - startDistance) <= 25000
         );
 
-        for (let i = 5; i < first20Min.length - 10; i++) {
-          const candidate = first20Min[i];
+        for (let i = 5; i < first25Km.length - 10; i++) {
+          const candidate = first25Km[i];
           const candidateSpeed = candidate.kmph;
 
           // Candidate speed must be in valid range
@@ -383,7 +407,7 @@
           // Phase A: Check for upward trend/fluctuation
           let hasPriorRise = false;
           for (let j = i - 5; j < i; j++) {
-            if (first20Min[j].kmph < candidateSpeed) {
+            if (first25Km[j].kmph < candidateSpeed) {
               hasPriorRise = true;
               break;
             }
@@ -394,8 +418,8 @@
           let lowestSpeed = candidateSpeed;
           let dropEndIndex = i;
 
-          for (let j = i + 1; j < first20Min.length; j++) {
-            const currentSpeed = first20Min[j].kmph;
+          for (let j = i + 1; j < first25Km.length; j++) {
+            const currentSpeed = first25Km[j].kmph;
 
             if (currentSpeed <= lowestSpeed) {
               lowestSpeed = currentSpeed;
@@ -413,8 +437,8 @@
 
           // Phase C: Recovery (if required)
           if (requireRecovery) {
-            for (let k = dropEndIndex + 1; k < first20Min.length; k++) {
-              if (first20Min[k].kmph >= candidateSpeed) {
+            for (let k = dropEndIndex + 1; k < first25Km.length; k++) {
+              if (first25Km[k].kmph >= candidateSpeed) {
                 var result = {};
                 result[testName + "_Point"] = candidate.datetime;
                 result[testName + "_Drop_kmph"] = parseFloat(dropAmount.toFixed(2));
@@ -518,6 +542,85 @@
         return (totalDistance / 1000).toFixed(3); 
       }
     
+      // Helper: get all speed restriction inputs from filter form
+    function getSpeedRestrictionInputs() {
+      console.log("getSpeedRestrictionInputs called.")
+      const rows = document.querySelectorAll('#filterSpeedRestrictionRows tr');
+      console.log("getSpeedRestrictionInputs rows:."+ rows);
+      const restrictions = [];
+      let sectionCounter = 1;
+      rows.forEach(row => {
+        let section = row.querySelector('input[name="filter_section"]')?.value.trim();
+        // Extract number from text (e.g., "80.0 KM" => 80.0)
+        const srSpeedText = row.querySelector('input[name="filter_srSpeed"]')?.value;
+        const srSpeedMatch = srSpeedText && srSpeedText.match(/[\d.]+/);
+        const srSpeed = srSpeedMatch ? parseFloat(srSpeedMatch[0]) : NaN;
+
+        const startFromText = row.querySelector('input[name="filter_startFrom"]')?.value;
+        const startFromMatch = startFromText && startFromText.match(/[\d.]+/);
+        const startFrom = startFromMatch ? parseFloat(startFromMatch[0]) : NaN;
+
+        const endAtText = row.querySelector('input[name="filter_endAt"]')?.value;
+        const endAtMatch = endAtText && endAtText.match(/[\d.]+/);
+        const endAt = endAtMatch ? parseFloat(endAtMatch[0]) : NaN;
+
+        if (!section) {
+          section = sectionCounter.toString();
+          sectionCounter++;
+        }
+
+        if (!isNaN(srSpeed) && !isNaN(startFrom) && !isNaN(endAt)) {
+          restrictions.push({ section, srSpeed, startFrom, endAt });
+        }
+      });
+      return restrictions;
+    }
+      
+    // Autofill the SPEED RESTRICTIONS OBSERVED BY THE LP table
+    function autofillSpeedRestrictionTable() {
+        // console.log("autofillSpeedRestrictionTable function was called:" );
+        const tableBody = document.getElementById('speedRestrictiondata');
+        // Remove all rows except the ones with manual edits (those with data-manual="true")
+        tableBody.querySelectorAll('tr').forEach(row => {
+          console.log("Row has stribute data manual"+ row.hasAttribute('data-manual'));
+          if (row.hasAttribute('data-manual') )
+          {
+              row.remove();
+          }
+        });
+
+        const restrictions = getSpeedRestrictionInputs();
+        console.log(restrictions);
+        restrictions.forEach(restriction => {
+          // Check if speed ever exceeds SR Speed in the specified range
+          const minKM = Math.min(restriction.startFrom, restriction.endAt);
+          const maxKM = Math.max(restriction.startFrom, restriction.endAt);
+          const minMeter = minKM * 1000;
+          const maxMeter = maxKM * 1000;
+          const exceeded = filteredData.some(d =>
+            d.distance_cumm_positive >= minMeter &&
+            d.distance_cumm_positive <= maxMeter &&
+            d.kmph > restriction.srSpeed
+          );
+          const remarks = exceeded ? "Not Observed" : "Observed";
+
+          // Create row
+          const newRow = document.createElement('tr');
+            newRow.innerHTML =
+            '<td><input type="text" name="section" style="width:95%;" value="' + restriction.section + '" /></td>' +
+            '<td><input type="text" name="srSpeed" style="width:95%;" value="' + restriction.srSpeed + '" /></td>' +
+            '<td><input type="text" name="startFrom" style="width:95%;" value="' + restriction.startFrom + '" /></td>' +
+            '<td><input type="text" name="endAt" style="width:95%;" value="' + restriction.endAt + '" /></td>' +
+            '<td colspan="2"><input type="text" name="remarks" style="width:95%;" value="' + remarks + '" /></td>' +
+            '<td><button type="button" style="cursor:pointer;">-</button></td>';
+          // Allow manual removal
+          newRow.querySelector('button').onclick = function() { newRow.remove(); };
+          // Mark as autofilled (not manual)
+          newRow.setAttribute('data-manual', 'false');
+          tableBody.appendChild(newRow);
+        });
+      }
+
     // Function to update analysis table based on filteredData
     function updateAnalysis() {
         // Top speed calculation
@@ -575,10 +678,23 @@
         var totalStops = 0;
         var stopIndices = [];
         for (var i = 0; i < filteredData.length; i++) {
-            if (filteredData[i].kmph === 0 ){ // && filteredData[i+1].kmph === 0) {
-                totalStops++;
-                stopIndices.push(i);
-                
+            if (filteredData[i].kmph === 0) {
+                // If this is the first stop, just add it
+                if (stopIndices.length === 0) {
+                    stopIndices.push(i);
+                    totalStops++;
+                } else {
+                    var lastStopIdx = stopIndices[stopIndices.length - 1];
+                    var lastStopDist = filteredData[lastStopIdx].distance_cumm;
+                    var currDist = filteredData[i].distance_cumm;
+                    // If current stop is within 200 meters of last, overwrite last with current
+                    if (Math.abs(currDist - lastStopDist) < 200) {
+                        stopIndices[stopIndices.length - 1] = i;
+                    } else {
+                        stopIndices.push(i);
+                        totalStops++;
+                    }
+                }
                 // Skip consecutive zeros
                 while (i < filteredData.length && filteredData[i].kmph === 0) {
                     i++;
@@ -638,7 +754,7 @@
             var cellStopDistance = document.createElement("td");
             cellStopDistance.innerText = parseFloat(stopDistancePositive)/1000;
 
-            var type = document.getElementById("form_traintype").value;;
+            var type = document.getElementById("form_traintype").value;
             var breakingtechnique = "Smooth";
 
             var cellMax1000 = document.createElement("td");
@@ -659,20 +775,26 @@
             cellMax100.style.color = color;
             if(color == "red"){breakingtechnique="Late"}
 
-            
             var cellMax10 = document.createElement("td");
             cellMax10.innerText = localMax10;
             var color = getSpeedColor(type, "10mtr" , localMax10);
             cellMax10.style.color = color;
             if(color == "red"){breakingtechnique="Late"}
             
-            // var cellSpeedatControlling = document.createElement("td");
-            // cellSpeedatControlling.innerHTML = "<input type=text name=SpeedatControlling >"
-
             var cellbreakingtechnique = document.createElement("td");
             cellbreakingtechnique.innerHTML = "<input type=text name=breakingtechnique value="+breakingtechnique+">"
 
-            
+            // --- Add remove button cell ---
+            var cellRemove = document.createElement("td");
+            var removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "-";
+            removeBtn.style.cursor = "pointer";
+            removeBtn.onclick = function() {
+              row.remove();
+            };
+            cellRemove.appendChild(removeBtn);
+
             row.appendChild(cellStopNumber);
             row.appendChild(cellStopTime);
             row.appendChild(cellStopDistance);
@@ -680,8 +802,9 @@
             row.appendChild(cellMax500);
             row.appendChild(cellMax100);
             row.appendChild(cellMax10);
-            // row.appendChild(cellSpeedatControlling);
             row.appendChild(cellbreakingtechnique);
+            row.appendChild(cellRemove); // <-- Add the remove button cell
+
             stopDetailsBody.appendChild(row);
         });
 
@@ -731,6 +854,8 @@
         form_timeRange.value = "";
       }
 
+      autofillSpeedRestrictionTable();
+
     }
     
     // update Analysis End
@@ -755,6 +880,53 @@
         filteredData = data.filter(function(d) {
             return d.date >= startTime && d.date <= endTime;
         });  
+
+        // After filteredData is set, add last stop entry if not there already:
+        if (
+          filteredData.length > 0 &&
+          filteredData[filteredData.length - 1].kmph <= 2
+        ) {
+        // Clone the last entry
+          var last = filteredData[filteredData.length - 1];
+          // Parse the datetime and add 1 second
+          var parts = last.datetime.split(/[/ :]/);
+          var dt = new Date(
+            2000 + parseInt(parts[2], 10),
+            parseInt(parts[1], 10) - 1,
+            parseInt(parts[0], 10),
+            parseInt(parts[3], 10),
+            parseInt(parts[4], 10),
+            parseInt(parts[5], 10)
+          );
+          dt.setSeconds(dt.getSeconds() + 1);
+
+          // Format new datetime as "DD/MM/YY HH:mm:ss"
+          var pad = n => n.toString().padStart(2, '0');
+          var newDatetime =
+            pad(dt.getDate()) +
+            '/' +
+            pad(dt.getMonth() + 1) +
+            '/' +
+            (dt.getFullYear() % 100) +
+            ' ' +
+            pad(dt.getHours()) +
+            ':' +
+            pad(dt.getMinutes()) +
+            ':' +
+            pad(dt.getSeconds());
+
+          // Create new entry
+          var newEntry = {
+            datetime: newDatetime,
+            kmph: 0,
+            distance_meters: 0
+          };
+          // Add date property for consistency
+          newEntry.date = new Date(dt);
+
+          filteredData.push(newEntry);
+        }
+
 
         // Update charts and analysis
         updateAnalysis();
@@ -981,8 +1153,12 @@
   }
   // Add a new row to the table when the "Add Row" button is clicked
   document.getElementById('AddRowSpeedRestrictionBtn').addEventListener('click',addspeedRestrictiondataRow );
-  addspeedRestrictiondataRow();
-  addspeedRestrictiondataRow();
+  if(!final_report)
+  {
+    addspeedRestrictiondataRow();
+  }
+
+  // addspeedRestrictiondataRow();
 
   function addotherobservationdataRow() {
     var tableBody = document.getElementById('otherobservationdata');
@@ -1013,7 +1189,11 @@
     tableBody.appendChild(newRow);
   }
 
-  addotherobservationdataRow();
+  if(!final_report)
+  {
+    addotherobservationdataRow();
+  }
+
 
   function populateBottomDiv() {
       const bottomDiv = document.getElementById("bottom");
@@ -1046,5 +1226,103 @@
     populateBottomDiv();
     </script>
 
-    </body>
+    <script>
+
+
+    </script>
+
+    <!-- --- Place this after your other <script> blocks --- -->
+
+    <!-- Add row to filter form's speed restriction input table -->
+    <script>
+function addFilterSpeedRestrictionRow(section="", srSpeed="", startFrom="", endAt="") {
+  var tbody = document.getElementById('filterSpeedRestrictionRows');
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td><input type="text" name="filter_section" style="width:95%;" value="' + section + '"></td>' +
+    '<td><input type="number" name="filter_srSpeed" style="width:95%;" value="' + srSpeed + '"></td>' +
+    '<td><input type="number" name="filter_startFrom" style="width:95%;" value="' + startFrom + '"></td>' +
+    '<td><input type="number" name="filter_endAt" style="width:95%;" value="' + endAt + '"></td>' +
+    '<td><button type="button" onclick="this.closest(\'tr\').remove()">-</button></td>';
+  tbody.appendChild(tr);
+}
+document.getElementById('addFilterSpeedRestrictionRow').onclick = function() {
+  addFilterSpeedRestrictionRow();
+};
+// Add one empty row by default
+
+  if(!final_report)
+  {
+  addFilterSpeedRestrictionRow();
+  }
+
+
+    </script>
+<button id="downloadHtmlBtn" style="position: fixed; top: 10px; right: 20px; z-index: 9999; padding: 8px 18px; font-size: 1em;">Download Final Report</button>
+<script>
+document.getElementById('downloadHtmlBtn').onclick = function() {
+  // 1. Set final_report to true in the downloaded HTML
+  var scripts = document.querySelectorAll('script');
+  scripts.forEach(function(script) {
+    if (script.textContent.includes('var final_report=false;')) {
+      script.textContent = script.textContent.replace('var final_report=false;', 'var final_report=true;');
+    }
+  });
+
+  // 2. Update all input/textarea/select elements' defaultValue/defaultSelected to current value
+  document.querySelectorAll('input, textarea, select').forEach(function(el) {
+    if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'number' || el.type === 'datetime-local')) {
+      el.setAttribute('value', el.value);
+    }
+    if (el.tagName === 'TEXTAREA') {
+      el.innerHTML = el.value;
+    }
+    if (el.tagName === 'SELECT') {
+      Array.from(el.options).forEach(function(opt) {
+        if (opt.value == el.value) opt.setAttribute('selected', 'selected');
+        else opt.removeAttribute('selected');
+      });
+    }
+  });
+
+  // 3. Serialize the DOM
+  var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // 4. Check for the data block before replacing
+
+  var dataBlockRegex1 = "data=\\/\\*data DO NOT REMOVE THIS COMMENT\\*\\/\\n";
+  var dataBlockRegex2 = "\\/\\*data_end DO NOT REMOVE THIS COMMENT\\*\\/"
+
+  var match1 = html.match(dataBlockRegex1);
+  console.log("aa:" + match1);
+  var match2 = html.match(dataBlockRegex2);
+  console.log("bb::" + match2);
+  var filteredDataStr = JSON.stringify(filteredData, null, 2);
+
+  var startIdx = html.indexOf("data=/*data DO NOT REMOVE THIS COMMENT*/");
+  var endIdx = html.indexOf("/*data_end DO NOT REMOVE THIS COMMENT*/", startIdx);
+  if (startIdx !== -1 && endIdx !== -1) {
+    var before = html.substring(0, startIdx + "data=/*data DO NOT REMOVE THIS COMMENT*/".length);
+    var after = html.substring(endIdx);
+    html = before + "\n" + filteredDataStr + "\n" + after;
+  }
+  // 6. Download as before
+  var blob = new Blob([html], {type: "text/html"});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  var fileName = "analysis_report";
+  try {
+    var path = window.location.pathname || "";
+    var matchFile = path.match(/([^\/\\]+)\.html?$/i);
+    if (matchFile && matchFile[1]) {
+      fileName = matchFile[1] + "_analysed";
+    }
+  } catch (e) {}
+  a.download = fileName + ".html";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+</script>
+  </body>
 </html>
