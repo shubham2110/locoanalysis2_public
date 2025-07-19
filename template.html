@@ -692,16 +692,19 @@
                     stopIndices.push(i);
                     totalStops++;
                 } else {
-                    var lastStopIdx = stopIndices[stopIndices.length - 1];
-                    var lastStopDist = filteredData[lastStopIdx].distance_cumm;
-                    var currDist = filteredData[i].distance_cumm;
-                    // If current stop is within 200 meters of last, overwrite last with current
-                    if (Math.abs(currDist - lastStopDist) < 200) {
-                        stopIndices[stopIndices.length - 1] = i;
-                    } else {
-                        stopIndices.push(i);
-                        totalStops++;
-                    }
+                  var lastStopIdx = stopIndices[stopIndices.length - 1];
+                  var lastStopDist = filteredData[lastStopIdx].distance_cumm;
+                  var currDist = filteredData[i].distance_cumm;
+                  var lastStopTime = filteredData[lastStopIdx].date;
+                  var currTime = filteredData[i].date;
+                  var timeDiffSeconds = Math.abs((currTime - lastStopTime) / 1000);
+                  // If current stop is within 200 meters OR within 2 minutes (120 seconds) of last, overwrite last with current
+                  if (Math.abs(currDist - lastStopDist) < 200 && timeDiffSeconds < 60) {
+                    stopIndices[stopIndices.length - 1] = i;
+                  } else {
+                    stopIndices.push(i);
+                    totalStops++;
+                  }
                 }
                 // Skip consecutive zeros
                 while (i < filteredData.length && filteredData[i].kmph === 0) {
