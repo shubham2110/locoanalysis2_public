@@ -139,7 +139,7 @@
           </tr>
            <tr>
             <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button></td>
-            <td colspan="1" ><button type="submit" style="width: 100%;">Apply Setting</button></td>
+            <td colspan="1" ><button type="submit" id="toggleFilterBtn3" style="width: 100%;">Apply Setting</button></td>
           </tr>
           </table>
         </form>
@@ -1134,7 +1134,8 @@
 
     document.getElementById("toggleFilterBtn").addEventListener("click",hidecontainer );
     document.getElementById("toggleFilterBtn2").addEventListener("click",hidecontainer );
-
+    document.getElementById("toggleFilterBtn3").addEventListener("click",hidecontainer );
+	    
     document.getElementById("filterFormContainer").style.display = "block";
 
     document.getElementById('toggleSpeedRestrictionBtn').addEventListener('click', function() {
