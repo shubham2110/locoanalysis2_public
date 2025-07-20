@@ -552,9 +552,9 @@
     
       // Helper: get all speed restriction inputs from filter form
     function getSpeedRestrictionInputs() {
-      console.log("getSpeedRestrictionInputs called.")
+   //   console.log("getSpeedRestrictionInputs called.")
       const rows = document.querySelectorAll('#filterSpeedRestrictionRows tr');
-      console.log("getSpeedRestrictionInputs rows:."+ rows);
+     // console.log("getSpeedRestrictionInputs rows:."+ rows);
       const restrictions = [];
       let sectionCounter = 1;
       rows.forEach(row => {
@@ -603,7 +603,7 @@
         const tableBody = document.getElementById('speedRestrictiondata');
         // Remove all rows except the ones with manual edits (those with data-manual="true")
         tableBody.querySelectorAll('tr').forEach(row => {
-          console.log("Row has stribute data manual"+ row.hasAttribute('data-manual'));
+       //   console.log("Row has stribute data manual"+ row.hasAttribute('data-manual'));
           if (row.hasAttribute('data-manual') )
           {
               row.remove();
@@ -611,7 +611,7 @@
         });
 
         const restrictions = getSpeedRestrictionInputs();
-        console.log(restrictions);
+      //  console.log(restrictions);
         restrictions.forEach(restriction => {
           // Check if speed ever exceeds SR Speed in the specified range
           const minKM = Math.min(restriction.startFrom, restriction.endAt);
@@ -651,7 +651,26 @@
         var journeyDate ="N/A";
 
         var direction = parseFloat(document.getElementById("direction").value);
-        var initdistancemeters = direction * Math.abs(parseFloat(document.getElementById("initdistance").value)*1000);
+        //var initdistancemeters = direction * Math.abs(parseFloat(document.getElementById("initdistance").value)*1000);
+	var initdistancemeters = 0.0;
+	const initdistancemeterstext = document.getElementById("initdistance")?.value || '0';
+	const initdistancemetersval = initdistancemeterstext.replace(/[^\d./]/g, '').split('/');
+	//console.log(initdistancemetersval);
+	if (initdistancemetersval.length >= 2){
+		var initdistno=parseFloat(initdistancemetersval[0]);
+		var initdistfr=parseFloat(initdistancemetersval[1]);
+		initdistfr = initdistfr/32.0;
+		if (initdistfr > 1){
+			initdistfr = 1.0;
+		}
+		initdistancemeters= initdistno + initdistfr;
+	}else{
+		initdistancemeters= parseFloat(initdistancemetersval[0]);
+	}
+	initdistancemeters = direction * Math.abs(initdistancemeters*1000); // converting to actual meters
+
+	//console.log(initdistancemeters);
+	    
         initdistance1 = initdistancemeters;
         filteredData.forEach(function(item) {
             item.distance_cumm = item.distance_meters + initdistance1
@@ -1318,9 +1337,9 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
   var dataBlockRegex2 = "\\/\\*data_end DO NOT REMOVE THIS COMMENT\\*\\/"
 
   var match1 = html.match(dataBlockRegex1);
-  console.log("aa:" + match1);
+  //console.log("aa:" + match1);
   var match2 = html.match(dataBlockRegex2);
-  console.log("bb::" + match2);
+  //console.log("bb::" + match2);
   var filteredDataStr = JSON.stringify(filteredData, null, 2);
 
   var startIdx = html.indexOf("data=/*data DO NOT REMOVE THIS COMMENT*/");
