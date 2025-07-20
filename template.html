@@ -44,7 +44,8 @@
 <!-- DeepSeek changes allowed after this line -->
 <style>
 @media print {
-  #downloadHtmlBtn {
+  #downloadHtmlBtn,
+  #printReportBtn {
     display: none !important;
   }
 }
@@ -1304,8 +1305,21 @@ document.getElementById('addFilterSpeedRestrictionRow').onclick = function() {
 
 
     </script>
-<button id="downloadHtmlBtn" style="position: fixed; top: 10px; right: 20px; z-index: 9999; padding: 8px 18px; font-size: 1em;">Download Final Report</button>
+<button id="downloadHtmlBtn"
+  style="position: fixed; top: 10px; right: 120px; z-index: 9999; padding: 8px 18px; font-size: 1em;">
+  Save Report
+</button>
+
+<!-- Print Button -->
+<button id="printReportBtn"
+  style="position: fixed; top: 10px; right: 20px; z-index: 9999; padding: 8px 18px; font-size: 1em;">
+  Print
+</button>
 <script>
+document.getElementById('printReportBtn').onclick = function() {
+  hidecontainer();
+  window.print();
+};
 document.getElementById('downloadHtmlBtn').onclick = function() {
   // 1. Set final_report to true in the downloaded HTML
   var scripts = document.querySelectorAll('script');
