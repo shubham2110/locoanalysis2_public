@@ -571,9 +571,10 @@
 
 	const startFromtext = row.querySelector('input[name="filter_startFrom"]')?.value || '';
 	const startFromval = startFromtext.replace(/[^\d./]/g, '').split('/');	
-	const startFrom = startFromval.length === 2
-	  ? (v => v[1]/32 > 1 ? Math.ceil(v[0]) : v[0] + v[1]/32)(startFromval.map(parseFloat))
-	  : parseFloat(startFromval[0]) || NaN;
+	var startFrom = startFromval.length === 2
+	  ? (v => v[1]/32 > 1 ? v[0]+1.0 : v[0] + v[1]/32)(startFromval.map(parseFloat))
+	  : parseFloat(startFromval[0]) || 0.0;
+	 startFrom = parseFloat(startFrom) + 0.075;
 
         // const endAtText = row.querySelector('input[name="filter_endAt"]')?.value;
         // const endAtMatch = endAtText && endAtText.match(/[\d.]+/);
@@ -581,9 +582,10 @@
 
 	const endAttext = row.querySelector('input[name="filter_endAt"]')?.value || '';
 	const endAtval = endAttext.replace(/[^\d./]/g, '').split('/');
-	const endAt = endAtval.length === 2
-	  ? (v => v[1]/32 > 1 ? Math.ceil(v[0]) : v[0] + v[1]/32)(endAtval.map(parseFloat))
-	  : parseFloat(endAtval[0]) || NaN;
+	var endAt = endAtval.length === 2
+	  ? (v => v[1]/32 > 1 ? v[0] + 1.0 : v[0] + v[1]/32)(endAtval.map(parseFloat))
+	  : parseFloat(endAtval[0]) || 0.0;
+	endAt = endAt + 0.025;
 
         if (!section) {
           section = sectionCounter.toString();
