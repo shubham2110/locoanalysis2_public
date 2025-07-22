@@ -1218,7 +1218,7 @@
 
     var srSpeedCell = document.createElement('td');
     srSpeedCell.setAttribute('colspan', '4');
-    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:20px; box-sizing: border-box; resize:vertical" ></textarea>';
+    srSpeedCell.innerHTML = '<textarea name="observation" style=" width:95%; height:60px; box-sizing: border-box; resize:vertical" ></textarea>';
     newRow.appendChild(srSpeedCell);
 
     // Create remove button
@@ -1306,13 +1306,47 @@ document.getElementById('addFilterSpeedRestrictionRow').onclick = function() {
 
     </script>
 <button id="downloadHtmlBtn"
-  style="position: fixed; top: 10px; right: 120px; z-index: 9999; padding: 8px 18px; font-size: 1em;">
+  style="
+    position: fixed;
+    top: 10px;
+    right: 120px;
+    z-index: 9999;
+    padding: 8px 18px;
+    font-size: 1em;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: background 0.2s;
+  "
+  onmouseover="this.style.background='#125ea2'"
+  onmouseout="this.style.background='#1976d2'"
+>
   Save Report
 </button>
 
 <!-- Print Button -->
 <button id="printReportBtn"
-  style="position: fixed; top: 10px; right: 20px; z-index: 9999; padding: 8px 18px; font-size: 1em;">
+  style="
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 9999;
+    padding: 8px 18px;
+    font-size: 1em;
+    background: #388e3c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: background 0.2s;
+  "
+  onmouseover="this.style.background='#256b28'"
+  onmouseout="this.style.background='#388e3c'"
+>
   Print
 </button>
 <script>
