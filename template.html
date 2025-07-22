@@ -798,7 +798,7 @@
             cellStopTime.innerText = new Date(stopTime).toLocaleString('en-GB');
             
             var cellStopDistance = document.createElement("td");
-            cellStopDistance.innerText = parseFloat(stopDistancePositive)/1000;
+            cellStopDistance.innerText = (parseFloat(stopDistancePositive) / 1000).toFixed(3);
 
             var type = document.getElementById("form_traintype").value;
             var breakingtechnique = "Smooth";
