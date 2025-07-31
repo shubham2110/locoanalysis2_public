@@ -563,7 +563,7 @@
         // Extract number from text (e.g., "80.0 KM" => 80.0)
         const srSpeedText = row.querySelector('input[name="filter_srSpeed"]')?.value;
         const srSpeedMatch = srSpeedText && srSpeedText.match(/[\d.]+/);
-        const srSpeed = srSpeedMatch ? parseFloat(srSpeedMatch[0]) : NaN;
+        const srSpeed = srSpeedMatch ? parseFloat(srSpeedMatch[0]) + 2 : NaN;
 
         // const startFromText = row.querySelector('input[name="filter_startFrom"]')?.value;
 	
