@@ -700,7 +700,7 @@
         document.getElementById('form_journeyDate').value = journeyDate;
 
         var form_mps = parseInt(document.getElementById('form_Mps').value.replace(/\D/g, ''), 10) || 200;
-        if( form_mps < topSpeedValue){
+        if( form_mps + 3 < topSpeedValue){
             document.getElementById('form_topSpeed').style.color = "red";
             document.getElementById('form_overSpeeding').value="Yes"
             document.getElementById('form_overSpeeding').style.color = "red";
@@ -1427,4 +1427,5 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
+
 
