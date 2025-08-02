@@ -626,7 +626,7 @@
             d.distance_cumm_positive <= maxMeter &&
             d.kmph > restriction.srSpeed
           );
-          const remarks = exceeded ? "Not Observed (pls confirm by manual check)" : "Observed";
+          const remarks = exceeded ? "pls confirm by manual check" : "Observed";
 
           // Create row
           const newRow = document.createElement('tr');
@@ -1427,5 +1427,6 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
+
 
 
