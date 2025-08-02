@@ -594,7 +594,7 @@
         }
 
         if (!isNaN(srSpeed) && !isNaN(startFrom) && !isNaN(endAt)) {
-          restrictions.push({ section, srSpeed, startFrom, endAt ,startFromtext, endAttext });
+          restrictions.push({ section, srSpeed, startFrom, endAt ,startFromtext, endAttext, srSpeedText });
         }
       });
       return restrictions;
@@ -632,7 +632,7 @@
           const newRow = document.createElement('tr');
             newRow.innerHTML =
             '<td><input type="text" name="section" style="width:95%;" value="' + restriction.section + '" /></td>' +
-            '<td><input type="text" name="srSpeed" style="width:95%;" value="' + restriction.srSpeed + '" /></td>' +
+            '<td><input type="text" name="srSpeed" style="width:95%;" value="' + restriction.srSpeedText + '" /></td>' +
             '<td><input type="text" name="startFrom" style="width:95%;" value="' + restriction.startFromtext + '" /></td>' +
             '<td><input type="text" name="endAt" style="width:95%;" value="' + restriction.endAttext + '" /></td>' +
             '<td colspan="2"><input type="text" name="remarks" style="width:95%;" value="' + remarks + '" /></td>' +
@@ -1427,3 +1427,4 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
+
