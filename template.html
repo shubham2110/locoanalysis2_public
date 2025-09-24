@@ -56,15 +56,14 @@
 <div id="backendversion" data-value="versionfromthebackend"></div>
 <div id="frontendversion" data-value="0.0.2"></div>
 <script>
-  var backendversion = document.getElementById("backendversion").getAttribute("data-value");
-  var frontendversion = document.getElementById("frontendversion").getAttribute("data-value");
-
-  if (backendversion != frontendversion) {
+  var backendversion=document.getElementById("backendversion").getAttribute("data-value");
+  var frontendversion=document.getElementById("frontendversion").getAttribute("data-value");
+  if(backendversion != frontendversion){
     console.log("You are using old software, please download new software.");
     document.getElementById("versionWarning").style.display = "block"; // show the warning div
   }
-
-  var final_report = false;
+  
+  var final_report=false;
 </script>
 
 <div style="display: flex; align-items: center;justify-content: center;">
@@ -95,77 +94,67 @@
         <!-- <div id="filterFormContainericon"></div> -->
         <div id="filterFormContainer">              
           
- <form id="filterForm">
-  <table border="1" align="center">
-    <tr>
-      <td>
-        <label for="startTime">Start Time: </label>
-        <input type="datetime-local" id="startTime" name="startTime" step="1" required>
-      </td>
-      <td>
-        <label for="endTime">End Time: </label>
-        <input type="datetime-local" id="endTime" name="endTime" step="1" required>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="initdistance">Starting KM: </label>
-        <input type="text" id="initdistance" name="starting km" value="0" required>
-      </td>
-      <td>
-        <label for="direction">KM: </label>
-        <select id="direction" name="direction" required>
-          <option value="1">Increasing</option>
-          <option value="-1">Decreasing</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <div>
-          <b>Speed Restrictions (for analysis):</b>
-          <table border="1" width="100%" id="filterSpeedRestrictionTable">
-            <thead>
-              <tr>
-                <th>Section</th>
-                <th>SR Speed</th>
-                <th>Start KM</th>
-                <th>End KM</th>
-                <th><button type="button" id="addFilterSpeedRestrictionRow">+</button></th>
-              </tr>
-            </thead>
-            <tbody id="filterSpeedRestrictionRows">
-            </tbody>
+          <form id="filterForm">
+          <table border="1" align="center">
+          <tr>
+            <TD>
+              <label for="startTime">Start Time: </label>
+              <input type="datetime-local" id="startTime" name="startTime" step="1" required>
+            </TD>
+            <TD>
+              <label for="endTime">End Time: </label>
+              <input type="datetime-local" id="endTime" name="endTime" step="1" required>
+            </TD>
+          </tr>
+          <TR>
+            <TD>
+              <label for="initdistance">Starting KM: </label><input type="text" id="initdistance" name="starting km" value="0" required>
+            </TD>
+            <TD>
+              <label for="direction">KM: </label>
+              <select id="direction" name="direction" required>
+                <option value="1">Increasing</option>
+                <option value="-1">Decreasing</option>
+              </select>
+            </TD>
+          </TR>
+         
+          <tr>
+            <td colspan="2">
+              <div>
+                <b>Speed Restrictions (for analysis):</b>
+                <table border="1" width="100%" id="filterSpeedRestrictionTable">
+                  <thead>
+                    <tr>
+                      <th>Section</th>
+                      <th>SR Speed</th>
+                      <th>Start KM</th>
+                      <th>End KM</th>
+                      <th><button type="button" id="addFilterSpeedRestrictionRow">+</button></th>
+                    </tr>
+                  </thead>
+                  <tbody id="filterSpeedRestrictionRows">
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr id="versionWarning">
+            <td colspan="2">
+              <b>You are using an old version of Speed Vision.</b><br>
+              Please download the latest version from 
+              <a href="https://loco.xlr.ovh/latest.exe" target="_blank">https://loco.xlr.ovh/latest.exe</a><br>
+              To download the manual, click 
+              <a href="https://loco.xlr.ovh/manual.pdf" target="_blank">here</a>.
+            </td>
+
+          </tr>
+           <tr>
+            <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button></td>
+            <td colspan="1" ><button type="submit" id="toggleFilterBtn3" style="width: 100%;">Apply Setting</button></td>
+          </tr>
           </table>
-        </div>
-      </td>
-    </tr>
-
-    <!-- 🚨 Version warning div -->
-    <tr>
-      <td colspan="2">
-        <div id="versionWarning" style="display:none; background:#ffe0e0; color:#900; padding:10px; border:1px solid #c00; border-radius:5px;">
-          <b>You are using an old version of Speed Vision.</b><br>
-          Please download the latest version from 
-          <a href="https://loco.xlr.ovh/latest.exe" target="_blank">https://loco.xlr.ovh/latest.exe</a><br>
-          To download the manual, click 
-          <a href="https://loco.xlr.ovh/manual.pdf" target="_blank">here</a>.
-          <br><br>
-          <button type="button" onclick="document.getElementById('versionWarning').style.display='none'">Hide Message</button>
-        </div>
-      </td>
-    </tr>
-
-    <tr>
-      <td colspan="1">
-        <button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button>
-      </td>
-      <td colspan="1">
-        <button type="submit" id="toggleFilterBtn3" style="width: 100%;">Apply Setting</button>
-      </td>
-    </tr>
-  </table>
-</form>
+        </form>
       </div>
     </div>
 
@@ -1449,8 +1438,6 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
-
-
 
 
 
