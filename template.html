@@ -133,25 +133,30 @@
               </div>
             </td>
           </tr>
-		  <tr id="versionWarning" style="display:none">
+			<tr id="versionWarning" style="display:none">
 			  <td colspan="2" 
-				  style="background-color:#ffcccc; color:#b30000; font-weight:bold;
-						 padding:10px; border:2px solid #ff0000; text-align:center;
-						 animation: blinker 1s linear infinite;">
+			      style="background-color:#ffcccc; color:#b30000; font-weight:bold;
+			             padding:10px; border:2px solid #ff0000; text-align:center;">
 			
-				<marquee behavior="scroll" direction="left" scrollamount="6"
-						 style="background-color:#ffcccc; color:#b30000; font-weight:bold;">
-				  ⚠️ You are using an old version of Speed Vision. ⚠️ 
-				  Please download the latest version from 
-				  <a href="https://loco.xlr.ovh/latest.exe" target="_blank" style="color:#0000ee; text-decoration:underline;">
-					https://loco.xlr.ovh/latest.exe
-				  </a> 
-				  — To download the user guide, click 
-				  <a href="https://drive.google.com/file/d/1UkQknsym1nW0NU2jtJVDm99CLhfxk1Ud/view?usp=sharing" target="_blank" style="color:#0000ee; text-decoration:underline;">
-					here
-				  </a>.
-				</marquee>
+			    <!-- Moving line -->
+			    <marquee behavior="alternate" scrollamount="4" 
+			             style="display:block; margin-bottom:8px; color:#b30000; font-weight:bold;">
+			      ⚠️ You are using an old version of Speed Vision. ⚠️
+			    </marquee>
 			
+			    <!-- Static line -->
+			    Please download the latest version from <br>
+			    <a href="https://loco.xlr.ovh/latest.exe" target="_blank" 
+			       style="color:#0000ee; text-decoration:underline;">
+			       https://loco.xlr.ovh/latest.exe
+			    </a><br>
+			
+			    <!-- Static line -->
+			    To download the user guide, click 
+			    <a href="https://drive.google.com/file/d/1UkQknsym1nW0NU2jtJVDm99CLhfxk1Ud/view?usp=sharing" 
+			       target="_blank" style="color:#0000ee; text-decoration:underline;">
+			       here
+			    </a>.
 			  </td>
 			</tr>
 			<tr>
@@ -1452,6 +1457,7 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
+
 
 
 
