@@ -133,17 +133,28 @@
               </div>
             </td>
           </tr>
-          <tr id="versionWarning" style="display:none">
-            <td colspan="2">
-              <b>You are using an old version of Speed Vision.</b><br>
-              Please download the latest version from 
-              <a href="https://loco.xlr.ovh/latest.exe" target="_blank">https://loco.xlr.ovh/latest.exe</a><br>
-              To download the user guide, click 
-              <a href="https://drive.google.com/file/d/1UkQknsym1nW0NU2jtJVDm99CLhfxk1Ud/view?usp=sharing" target="_blank">here</a>.
-            </td>
-
-          </tr>
-           <tr>
+		  <tr id="versionWarning" style="display:none">
+			  <td colspan="2" 
+				  style="background-color:#ffcccc; color:#b30000; font-weight:bold;
+						 padding:10px; border:2px solid #ff0000; text-align:center;
+						 animation: blinker 1s linear infinite;">
+			
+				<marquee behavior="scroll" direction="left" scrollamount="6"
+						 style="background-color:#ffcccc; color:#b30000; font-weight:bold;">
+				  ⚠️ You are using an old version of Speed Vision. ⚠️ 
+				  Please download the latest version from 
+				  <a href="https://loco.xlr.ovh/latest.exe" target="_blank" style="color:#0000ee; text-decoration:underline;">
+					https://loco.xlr.ovh/latest.exe
+				  </a> 
+				  — To download the user guide, click 
+				  <a href="https://drive.google.com/file/d/1UkQknsym1nW0NU2jtJVDm99CLhfxk1Ud/view?usp=sharing" target="_blank" style="color:#0000ee; text-decoration:underline;">
+					here
+				  </a>.
+				</marquee>
+			
+			  </td>
+			</tr>
+			<tr>
             <td colspan="1" ><button type="submit" id="toggleFilterBtn2" style="width: 100%;">Hide Settings</button></td>
             <td colspan="1" ><button type="submit" id="toggleFilterBtn3" style="width: 100%;">Apply Setting</button></td>
           </tr>
@@ -1441,6 +1452,7 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
 </script>
   </body>
 </html>
+
 
 
 
