@@ -133,7 +133,7 @@
               </div>
             </td>
           </tr>
-          <tr id="versionWarning">
+          <tr id="versionWarning" style="display:none">
             <td colspan="2">
               <b>You are using an old version of Speed Vision.</b><br>
               Please download the latest version from 
@@ -1435,11 +1435,13 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
   var frontendversion=document.getElementById("frontendversion").getAttribute("data-value");
   if(backendversion != frontendversion){
     console.log("You are using old software, please download new software.");
-    document.getElementById("versionWarning").style.display = "block"; // show the warning div
+    //document.getElementById("versionWarning").style.display = "block"; // show the warning div
+	document.getElementById("versionWarning").style.display = "table-row";
   }
 </script>
   </body>
 </html>
+
 
 
 
