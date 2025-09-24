@@ -55,16 +55,7 @@
 <body align="center"  style="background: linear-gradient(to bottom, #fdfcfb, #e2e1e0);" >
 <div id="backendversion" data-value="versionfromthebackend"></div>
 <div id="frontendversion" data-value="0.0.2"></div>
-<script>
-  var backendversion=document.getElementById("backendversion").getAttribute("data-value");
-  var frontendversion=document.getElementById("frontendversion").getAttribute("data-value");
-  if(backendversion != frontendversion){
-    console.log("You are using old software, please download new software.");
-    document.getElementById("versionWarning").style.display = "block"; // show the warning div
-  }
-  
-  var final_report=false;
-</script>
+
 
 <div style="display: flex; align-items: center;justify-content: center;">
   <img style="height: 40px; margin-right: 10px;" alt="Speed Vision" src="data:image/png;base64,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" />  
@@ -1435,6 +1426,15 @@ document.getElementById('downloadHtmlBtn').onclick = function() {
   a.click();
   document.body.removeChild(a);
 };
+</script>
+<script>
+  var backendversion=document.getElementById("backendversion").getAttribute("data-value");
+  var frontendversion=document.getElementById("frontendversion").getAttribute("data-value");
+  if(backendversion != frontendversion){
+    console.log("You are using old software, please download new software.");
+    document.getElementById("versionWarning").style.display = "block"; // show the warning div
+  }  
+  var final_report=false;
 </script>
   </body>
 </html>
